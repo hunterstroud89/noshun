@@ -1,0 +1,99 @@
+{
+    "id": "mlivf16cmd1xd4uo2",
+    "title": "broc rob",
+    "icon": "emoji:\ud83c\udf3f",
+    "content": [
+        {
+            "id": "blk_mmudmprawu5pp",
+            "type": "database",
+            "content": "{\"columns\":[{\"name\":\"Name\",\"type\":\"text\"},{\"name\":\"Tags\",\"type\":\"select\",\"options\":[]},{\"name\":\"Status\",\"type\":\"checkbox\"}],\"rows\":[{\"cells\":[\"false\",\"\",false]},{\"cells\":[\"false\",\"\",false]}],\"sort\":null,\"filter\":null}",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mmudmspbza4gv",
+            "type": "p",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mmudmprb6fkuo",
+            "type": "p",
+            "content": "this is the text im talking about",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mmudmprb5geh5",
+            "type": "p",
+            "content": "gdg",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mmudmprbq2kq0",
+            "type": "p",
+            "content": "right here it should line up with the header where it says broccoli rob",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mmudmprb6vttf",
+            "type": "image",
+            "content": "http:\/\/10.0.0.59:8880\/projects\/notion-clone-2\/data\/workspaces\/mmtij76gme8xxgw49\/images\/img_69b90b68c18ab5.59495154.jpg",
+            "checked": false,
+            "open": false,
+            "indent": 0,
+            "width": "48%",
+            "align": "left"
+        },
+        {
+            "id": "blk_mmudmpre3pz9b",
+            "type": "p",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mmudmpreqvzet",
+            "type": "p",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mmudmpreard7k",
+            "type": "p",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mmudmvtfejnjb",
+            "type": "p",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        }
+    ],
+    "parentId": null,
+    "isFavorite": true,
+    "isDeleted": false,
+    "createdAt": 1770865199796,
+    "updatedAt": 1773737709000,
+    "cover": {
+        "value": "url(data\/workspaces\/mmtij76gme8xxgw49\/images\/img_69b865c32c3601.78400303.jpg)",
+        "type": "image",
+        "fit": "tile"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "mmq3xsy12ppljghdl",
+    "title": "Untitled",
+    "icon": "emoji:\ud83d\udc7d",
+    "content": [
+        {
+            "id": "blk_mmtoet4uokxpz",
+            "type": "p",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        }
+    ],
+    "parentId": null,
+    "isFavorite": false,
+    "isDeleted": false,
+    "createdAt": 1773479558089,
+    "updatedAt": 1773695356000,
+    "cover": {
+        "value": "url(data\/workspaces\/mmtij76gme8xxgw49\/images\/img_69b8717ce10b63.79430531.gif)",
+        "type": "image",
+        "fit": "cover"
+    }
+}

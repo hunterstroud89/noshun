@@ -1,0 +1,44 @@
+{
+    "id": "mjs6nw7a7wxf0hbqx",
+    "title": "hiii",
+    "icon": "\ud83d\ude04",
+    "content": [
+        {
+            "id": "blk_mmoitmg4jlml9",
+            "type": "p",
+            "content": "huihiuh",
+            "checked": false,
+            "open": false
+        },
+        {
+            "id": "blk_mmoitmg4wspnp",
+            "type": "p",
+            "content": "njunjkn",
+            "checked": false,
+            "open": false
+        },
+        {
+            "id": "blk_mmoitmg4it1sy",
+            "type": "p",
+            "content": "",
+            "checked": false,
+            "open": false
+        },
+        {
+            "id": "blk_mmoitmg4kzqwv",
+            "type": "image",
+            "content": "",
+            "checked": false,
+            "open": false
+        }
+    ],
+    "parentId": null,
+    "isFavorite": false,
+    "isDeleted": false,
+    "createdAt": 1767074719943,
+    "updatedAt": 1773383627000,
+    "cover": {
+        "value": "#ffdc49",
+        "type": "color"
+    }
+}

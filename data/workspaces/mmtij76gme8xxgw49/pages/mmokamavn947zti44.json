@@ -1,0 +1,24 @@
+{
+    "id": "mmokamavn947zti44",
+    "title": "broc 2",
+    "icon": "page",
+    "content": [
+        {
+            "id": "blk_mmtl2fptdfljo",
+            "type": "p",
+            "content": "<br>",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        }
+    ],
+    "parentId": "mlivf16cmd1xd4uo2",
+    "isFavorite": false,
+    "isDeleted": false,
+    "createdAt": 1773386097511,
+    "updatedAt": 1773689727000,
+    "cover": {
+        "value": "linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)",
+        "type": "gradient"
+    }
+}

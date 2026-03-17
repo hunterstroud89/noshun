@@ -1,0 +1,20 @@
+{
+    "id": "mmokeau8e38ggzvp3",
+    "title": "hunter",
+    "icon": "\ud83c\udf3a",
+    "content": [
+        {
+            "id": "blk_mmokeca2gx1l5",
+            "type": "p",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        }
+    ],
+    "parentId": "mlivf16cmd1xd4uo2",
+    "isFavorite": false,
+    "isDeleted": false,
+    "createdAt": 1773386269280,
+    "updatedAt": 1773386286000
+}
