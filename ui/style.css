@@ -683,15 +683,11 @@ body {
     cursor: grabbing;
 }
 
-.block-handle {
-    display: none;
-}
-
 /* Block context menu */
 .block-context-menu {
     min-width: 200px;
     background: var(--bg-primary);
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-lg);
     padding: 4px;
@@ -732,7 +728,7 @@ body {
 
 .bcm-divider {
     height: 1px;
-    background: var(--border-light);
+    background: var(--border-color);
     margin: 4px 0;
 }
 
@@ -1992,6 +1988,7 @@ body {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     width: 380px;
+    max-width: calc(100vw - 32px);
     max-height: 460px;
     overflow: hidden;
     display: flex;
@@ -2100,6 +2097,7 @@ body {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     width: 480px;
+    max-width: calc(100vw - 32px);
     max-height: 500px;
     overflow: hidden;
 }
@@ -2205,14 +2203,6 @@ body {
 }
 
 /* Page Item Dragging */
-.page-tree-node {
-    /* wrapper for page-item + children */
-}
-
-.page-children {
-    /* children indent handled by paddingLeft in JS */
-}
-
 .page-toggle {
     font-size: 10px;
     width: 16px;
@@ -2520,7 +2510,7 @@ body {
         bottom: 0;
         background: rgba(0, 0, 0, 0.3);
         z-index: -1;
-        pointer-events: none;
+        pointer-events: auto;
     }
     
     .mobile-menu-btn {
@@ -2562,4 +2552,33 @@ body {
         z-index: 100;
         box-shadow: var(--shadow-lg);
     }
+}
+
+/* Focus-visible for keyboard accessibility */
+:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+.page-item:focus-visible,
+.slash-menu-item:focus-visible,
+.command-result:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: -2px;
+    border-radius: var(--radius-sm);
+}
+
+/* Make hover-only UI accessible via focus-within */
+.block:focus-within > .block-menu {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.page-item:focus-within .page-actions {
+    display: flex;
+}
+
+.block:focus-within .image-actions {
+    display: flex;
 }

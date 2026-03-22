@@ -17,6 +17,8 @@ const Editor = {
     saveTimeout: null,
     dropIndicator: null,
     draggedBlock: null,
+    isComposing: false,
+    _loading: false,
 
     init(containerId) {
         this.container = document.getElementById(containerId);
@@ -40,6 +42,16 @@ const Editor = {
         this.container.addEventListener('input', (e) => this.handleInput(e));
         this.container.addEventListener('click', (e) => this.handleClick(e));
         this.container.addEventListener('mouseup', () => this.handleSelection());
+
+        // CJK composition handling
+        this.container.addEventListener('compositionstart', () => { this.isComposing = true; });
+        this.container.addEventListener('compositionend', () => { this.isComposing = false; });
+
+        // Save pending changes when leaving — use visibilitychange instead of
+        // beforeunload so the save completes before the page tears down
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') this.flushSave();
+        });
         
         // Close menus on outside click
         document.addEventListener('click', (e) => {
@@ -143,37 +155,33 @@ const Editor = {
                     sel.removeAllRanges();
                     sel.addRange(range);
                 }
+                // ensureTrailingBlock first, then save (so trailing block is included)
+                this.ensureTrailingBlock();
+                updateNumberedLists(this.container);
                 this.scheduleSave();
             }
-            this.ensureTrailingBlock();
         }
         
         // Arrow up at start - move to previous block
         if (e.key === 'ArrowUp') {
-            const sel = window.getSelection();
-            if (sel.anchorOffset === 0) {
+            if (this._isCursorAtStart(target)) {
                 const prevBlock = block.previousElementSibling;
                 if (prevBlock) {
                     e.preventDefault();
                     const prevContent = prevBlock.querySelector('.block-content');
-                    if (prevContent) {
-                        prevContent.focus();
-                    }
+                    if (prevContent) prevContent.focus();
                 }
             }
         }
         
         // Arrow down at end - move to next block
         if (e.key === 'ArrowDown') {
-            const sel = window.getSelection();
-            if (sel.anchorOffset === target.textContent.length) {
+            if (this._isCursorAtEnd(target)) {
                 const nextBlock = block.nextElementSibling;
                 if (nextBlock) {
                     e.preventDefault();
                     const nextContent = nextBlock.querySelector('.block-content');
-                    if (nextContent) {
-                        nextContent.focus();
-                    }
+                    if (nextContent) nextContent.focus();
                 }
             }
         }
@@ -203,15 +211,19 @@ const Editor = {
     handleInput(e) {
         const target = e.target;
         if (!target.classList.contains('block-content')) return;
+        if (this.isComposing) return;
         
-        const text = target.textContent;
         const block = target.closest('.block');
         
-        // Check for slash command
-        if (text === '/') {
-            this.showSlashMenu(target);
-        } else if (text.startsWith('/')) {
-            this.filterSlashMenu(text.substring(1));
+        // Check for slash command using caret context
+        const slashQuery = this._getSlashQuery(target);
+        if (slashQuery !== null) {
+            if (slashQuery === '') {
+                this.showSlashMenu(target);
+            } else {
+                if (!this.slashMenuVisible) this.showSlashMenu(target);
+                this.filterSlashMenu(slashQuery);
+            }
         } else {
             this.hideSlashMenu();
         }
@@ -507,6 +519,7 @@ const Editor = {
 
     // Save functionality
     scheduleSave() {
+        if (this._loading) return;
         clearTimeout(this.saveTimeout);
         this.saveTimeout = setTimeout(() => {
             if (typeof saveCurrentPage === 'function') {
@@ -515,24 +528,73 @@ const Editor = {
         }, SAVE_DELAY_MS);
     },
 
+    flushSave() {
+        if (this.saveTimeout) {
+            clearTimeout(this.saveTimeout);
+            this.saveTimeout = null;
+            if (typeof saveCurrentPage === 'function') {
+                saveCurrentPage();
+            }
+        }
+    },
+
     // Load content
     loadContent(blocks) {
+        this._loading = true;
         this.container.innerHTML = '';
         
         if (!blocks || blocks.length === 0) {
             this.addEmptyBlock();
-            return;
+        } else {
+            const fragment = deserializeBlocks(blocks);
+            this.container.appendChild(fragment);
+            updateNumberedLists(this.container);
+            this.ensureTrailingBlock();
         }
-        
-        const fragment = deserializeBlocks(blocks);
-        this.container.appendChild(fragment);
-        updateNumberedLists(this.container);
-        this.ensureTrailingBlock();
+        // Delay reset — Safari fires contenteditable input events asynchronously
+        setTimeout(() => { this._loading = false; }, 50);
     },
 
     // Get content
     getContent() {
         return serializeBlocks(this.container);
+    },
+
+    // Cursor helpers for rich text (inline formatting nodes)
+    _isCursorAtStart(el) {
+        const sel = window.getSelection();
+        if (!sel.rangeCount) return false;
+        const range = sel.getRangeAt(0);
+        const testRange = document.createRange();
+        testRange.selectNodeContents(el);
+        testRange.setEnd(range.startContainer, range.startOffset);
+        return testRange.toString().length === 0;
+    },
+
+    _isCursorAtEnd(el) {
+        const sel = window.getSelection();
+        if (!sel.rangeCount) return false;
+        const range = sel.getRangeAt(0);
+        const testRange = document.createRange();
+        testRange.selectNodeContents(el);
+        testRange.setStart(range.endContainer, range.endOffset);
+        return testRange.toString().length === 0;
+    },
+
+    // Extract slash query from caret position (works mid-text)
+    _getSlashQuery(target) {
+        const sel = window.getSelection();
+        if (!sel.rangeCount || !sel.isCollapsed) return null;
+        const range = sel.getRangeAt(0);
+        const node = range.startContainer;
+        if (node.nodeType !== Node.TEXT_NODE) return null;
+        const text = node.textContent;
+        const offset = range.startOffset;
+        // Walk backwards from caret to find a '/' preceded by whitespace or at start
+        const before = text.substring(0, offset);
+        const match = before.match(/(^|\s)\/([^\s]*)$/);
+        if (!match) return null;
+        return match[2]; // everything after the slash
     },
 
     // Clear editor

@@ -345,11 +345,11 @@ if (is_dir($wsDir)) {
     <script src="core/features.js"></script>
     <script src="core/app.js"></script>
     <script>
-        // Register service worker for offline support
+        // Remove any old service workers — they cause fetch issues
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service worker registered'))
-                .catch(err => console.log('SW registration failed:', err));
+            navigator.serviceWorker.getRegistrations().then(regs => {
+                regs.forEach(r => r.unregister());
+            });
         }
     </script>
 </body>

@@ -10,6 +10,7 @@ const Storage = {
     _settings: {},
     _workspaceId: null,
     _loaded: false,
+    _settingsTimer: null,
 
     // Bootstrap: find or create workspace, then load data
     async init() {
@@ -97,11 +98,20 @@ const Storage = {
     },
 
     saveSettings() {
-        fetch(`api.php?action=settings&workspace=${encodeURIComponent(this._workspaceId)}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(this._settings)
-        }).catch(e => console.warn('Could not save settings:', e));
+        clearTimeout(this._settingsTimer);
+        this._settingsTimer = setTimeout(() => {
+            const url = `api.php?action=settings&workspace=${encodeURIComponent(this._workspaceId)}`;
+            const body = JSON.stringify(this._settings);
+            if (document.visibilityState === 'hidden' && navigator.sendBeacon) {
+                navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }));
+            } else {
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body
+                }).catch(() => {});
+            }
+        }, 300);
     },
 
     // Workspace accessors (read from settings)
@@ -229,15 +239,23 @@ const Storage = {
     // ---- Server operations ----
 
     async syncToServer(page) {
+        const url = `api.php?action=pages&workspace=${encodeURIComponent(this._workspaceId)}`;
+        const body = JSON.stringify(page);
+
+        // Use sendBeacon during page teardown (refresh, tab close)
+        if (document.visibilityState === 'hidden' && navigator.sendBeacon) {
+            navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }));
+            return true;
+        }
+
         try {
-            const res = await fetch(`api.php?action=pages&workspace=${encodeURIComponent(this._workspaceId)}`, {
+            const res = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(page)
+                body
             });
             return res.ok;
         } catch (e) {
-            console.warn('Could not sync to server:', e);
             return false;
         }
     },
@@ -249,7 +267,7 @@ const Storage = {
             });
             return res.ok;
         } catch (e) {
-            console.warn('Could not delete from server:', e);
+            console.debug('Delete skipped:', e.message);
             return false;
         }
     },

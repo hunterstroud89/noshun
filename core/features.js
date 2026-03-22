@@ -305,7 +305,7 @@ const Features = {
                 content.innerHTML = `
                     <div style="text-align: center; padding: 40px;">
                         <input type="file" id="cover-upload" accept="image/*" style="display: none;">
-                        <button class="btn-primary" onclick="document.getElementById('cover-upload').click()">
+                        <button class="btn-primary" id="cover-upload-btn">
                             Upload an image
                         </button>
                         <p style="margin-top: 12px; color: var(--text-muted); font-size: 13px;">
@@ -313,6 +313,9 @@ const Features = {
                         </p>
                     </div>
                 `;
+                document.getElementById('cover-upload-btn').addEventListener('click', () => {
+                    document.getElementById('cover-upload').click();
+                });
                 document.getElementById('cover-upload').addEventListener('change', async (e) => {
                     const file = e.target.files[0];
                     if (file) {

@@ -10,8 +10,12 @@ const History = {
     isApplying: false,
 
     init() {
-        // Keyboard shortcuts
+        // Keyboard shortcuts (skip when focus is in inputs/modals)
         document.addEventListener('keydown', (e) => {
+            const tag = e.target.tagName;
+            if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+            if (e.target.closest('.modal-overlay, .command-palette')) return;
+
             // Cmd/Ctrl + Z = Undo
             if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
                 e.preventDefault();
@@ -69,7 +73,12 @@ const History = {
         
         // Apply previous state
         const previous = this.undoStack[this.undoStack.length - 1];
-        this.applyState(JSON.parse(previous));
+        try {
+            this.applyState(JSON.parse(previous));
+        } catch (e) {
+            console.warn('Undo state corrupted, skipping');
+            return;
+        }
         
         this.showToast('Undo');
     },
@@ -83,7 +92,12 @@ const History = {
         
         const state = this.redoStack.pop();
         this.undoStack.push(state);
-        this.applyState(JSON.parse(state));
+        try {
+            this.applyState(JSON.parse(state));
+        } catch (e) {
+            console.warn('Redo state corrupted, skipping');
+            return;
+        }
         
         this.showToast('Redo');
     },
@@ -97,9 +111,10 @@ const History = {
             Editor.loadContent(state);
         }
         
-        setTimeout(() => {
+        // Use requestAnimationFrame for reliable timing instead of arbitrary timeout
+        requestAnimationFrame(() => {
             this.isApplying = false;
-        }, 100);
+        });
     },
 
     // Show undo/redo feedback
@@ -111,13 +126,5 @@ const History = {
     clear() {
         this.undoStack = [];
         this.redoStack = [];
-    },
-
-    // Get current state for saving
-    getCurrentState() {
-        if (this.undoStack.length > 0) {
-            return JSON.parse(this.undoStack[this.undoStack.length - 1]);
-        }
-        return null;
     }
 };

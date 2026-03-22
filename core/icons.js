@@ -27,8 +27,13 @@ const Icons = {
     },
 
     // All available emoji names
+    // All available emoji names (memoized)
+    _emojiListCache: null,
     emojiList() {
-        return Object.values(this.emojiCategories).flat();
+        if (!this._emojiListCache) {
+            this._emojiListCache = Object.values(this.emojiCategories).flat();
+        }
+        return this._emojiListCache;
     },
 
     // UI icon categories for the picker

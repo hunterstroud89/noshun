@@ -1,4 +1,4 @@
-const CACHE_NAME = 'notion-clone-v39';
+const CACHE_NAME = 'notion-clone-v42';
 const ASSETS = [
     './',
     './index.php',
@@ -39,32 +39,36 @@ self.addEventListener('activate', (event) => {
 
 // Fetch - serve from cache, fall back to network
 self.addEventListener('fetch', (event) => {
+    // Only cache GET requests for static assets
+    if (event.request.method !== 'GET') return;
+    
     const url = new URL(event.request.url);
     
-    // Skip API calls and data directory — always go to network
+    // Let API calls and data requests go straight to the server
     if (url.pathname.includes('api.php') || url.pathname.includes('/data/')) {
-        event.respondWith(
-            fetch(event.request).catch(() => {
-                return new Response(JSON.stringify({ error: 'Offline' }), {
-                    headers: { 'Content-Type': 'application/json' }
-                });
-            })
-        );
         return;
     }
     
-    // For app assets, try cache first
+    // For app assets, try cache first then network (and cache new fetches)
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
                 return cachedResponse;
             }
-            return fetch(event.request);
+            return fetch(event.request).then((response) => {
+                // Cache emoji SVGs and images for offline use
+                if (response.ok && (url.pathname.includes('/lib/emojis/') || url.pathname.includes('/images/'))) {
+                    const clone = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+                }
+                return response;
+            });
         }).catch(() => {
-            // Return offline page for navigation requests
+            // Return offline page for navigation requests, empty response for others
             if (event.request.mode === 'navigate') {
                 return caches.match('./index.php');
             }
+            return new Response('', { status: 503, statusText: 'Offline' });
         })
     );
 });

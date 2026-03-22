@@ -4,9 +4,17 @@
     "icon": "page",
     "content": [
         {
-            "id": "blk_mmtobo9k3z67h",
+            "id": "blk_mn05c2v8uasrk",
             "type": "image",
             "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mn05c2v95nol8",
+            "type": "p",
+            "content": "<br>",
             "checked": false,
             "open": false,
             "indent": 0
@@ -16,7 +24,7 @@
     "isFavorite": false,
     "isDeleted": false,
     "createdAt": 1767032838655,
-    "updatedAt": 1773695233000,
+    "updatedAt": 1774086575000,
     "cover": {
         "value": "url(data\/workspaces\/mmtij76gme8xxgw49\/images\/img_69b863710aa346.39583931.png)",
         "type": "image",

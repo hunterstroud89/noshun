@@ -261,10 +261,7 @@ const App = {
             }
         });
 
-        // Window unload - sync
-        window.addEventListener('beforeunload', () => {
-            this.saveCurrentPage();
-        });
+
         
         // Hamburger menu toggle (works on all screen sizes)
         document.getElementById('btn-mobile-menu')?.addEventListener('click', () => {
@@ -587,12 +584,6 @@ const App = {
         });
     },
 
-    savePageOrder() {
-        const pageList = document.getElementById('page-list');
-        const order = Array.from(pageList.querySelectorAll('.page-item')).map(item => item.dataset.pageId);
-        Storage.setPref('pageOrder', order);
-    },
-
     updatePageListItem(pageId, title) {
         const item = document.querySelector(`.page-item[data-page-id="${pageId}"]`);
         if (item) {
@@ -601,11 +592,17 @@ const App = {
     },
 
     loadLastPage() {
-        this.showHome();
+        const lastPageId = Storage.getPref('lastPage');
+        if (lastPageId && Storage.getPage(lastPageId)) {
+            this.loadPage(lastPageId);
+        } else {
+            this.showHome();
+        }
     },
 
     showHome() {
         this.currentPage = null;
+        Storage.setPref('lastPage', null);
         document.getElementById('page-editor').style.display = 'none';
         document.getElementById('page-cover-container').style.display = 'none';
         document.getElementById('home-screen').style.display = '';

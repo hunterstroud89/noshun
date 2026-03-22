@@ -564,18 +564,10 @@ function serializeBlocks(containerEl) {
     return Array.from(blocks).map(block => {
         const type = block.getAttribute('data-type');
         let content = '';
-        let imageWidth = '';
-        let imageAlign = '';
         
         if (type === 'image') {
-            // Store the img src directly
             const img = block.querySelector('img');
             content = img ? img.src : '';
-            const container = block.querySelector('.image-container');
-            if (container) {
-                if (container.style.width) imageWidth = container.style.width;
-                if (container.dataset.align) imageAlign = container.dataset.align;
-            }
         } else if (type === 'table') {
             // Store table data as JSON
             const tableEl = block.querySelector('table');
@@ -598,22 +590,32 @@ function serializeBlocks(containerEl) {
             open: block.classList.contains('open'),
             indent: parseInt(block.dataset.indent || '0', 10) || 0
         };
-        if (imageWidth) result.width = imageWidth;
-        if (imageAlign) result.align = imageAlign;
+        if (type === 'image') {
+            const container = block.querySelector('.image-container');
+            if (container) {
+                if (container.style.width) result.width = container.style.width;
+                if (container.dataset.align) result.align = container.dataset.align;
+            }
+        }
         return result;
     });
 }
+
+// Reverse map: dataType → BlockTypes key (built once)
+const _typeKeyMap = Object.fromEntries(
+    Object.entries(BlockTypes).map(([key, val]) => [val.dataType, key])
+);
 
 // Deserialize blocks from JSON
 function deserializeBlocks(blocksData) {
     const fragment = document.createDocumentFragment();
     
     blocksData.forEach(blockData => {
-        const typeKey = Object.keys(BlockTypes).find(k => BlockTypes[k].dataType === blockData.type);
+        const typeKey = _typeKeyMap[blockData.type] || 'paragraph';
         const opts = {};
         if (blockData.width) opts.width = blockData.width;
         if (blockData.align) opts.align = blockData.align;
-        const block = createBlockElement(typeKey || 'paragraph', blockData.content, opts);
+        const block = createBlockElement(typeKey, blockData.content, opts);
         
         if (blockData.checked) block.classList.add('checked');
         if (blockData.open) block.classList.add('open');
@@ -911,7 +913,13 @@ function buildDatabase(wrapper, dbData, block) {
         const colType = dbData.columns[ci]?.type || 'text';
         displayRows.sort((a, b) => {
             let va = a.cells[ci] ?? '', vb = b.cells[ci] ?? '';
-            if (colType === 'number') return (parseFloat(va) - parseFloat(vb)) * dir;
+            if (colType === 'number') {
+                const na = parseFloat(va), nb = parseFloat(vb);
+                if (isNaN(na) && isNaN(nb)) return 0;
+                if (isNaN(na)) return 1;  // empty sorts last
+                if (isNaN(nb)) return -1;
+                return (na - nb) * dir;
+            }
             if (colType === 'checkbox') return ((va ? 1 : 0) - (vb ? 1 : 0)) * dir;
             return String(va).localeCompare(String(vb)) * dir;
         });
@@ -924,7 +932,7 @@ function buildDatabase(wrapper, dbData, block) {
         const colType = dbData.columns[ci]?.type || 'text';
         displayRows = displayRows.filter(r => {
             const val = r.cells[ci];
-            if (colType === 'checkbox') return String(!!val) === fv;
+            if (colType === 'checkbox') return String(!!val) === String(!!fv || fv === 'true');
             return String(val ?? '').toLowerCase().includes(fv);
         });
     }
