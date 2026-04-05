@@ -601,7 +601,14 @@ body {
     background: transparent;
     color: var(--text-primary);
     outline: none;
+    -webkit-appearance: none;
+    appearance: none;
     line-height: 1.2;
+}
+
+.page-title:focus {
+    outline: none;
+    box-shadow: none;
 }
 
 .page-title::placeholder {
@@ -757,6 +764,7 @@ body {
     flex: 1;
     outline: none;
     -webkit-appearance: none;
+    appearance: none;
     min-height: 1.5em;
 }
 

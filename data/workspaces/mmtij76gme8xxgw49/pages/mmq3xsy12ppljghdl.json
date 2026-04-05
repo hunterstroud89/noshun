@@ -1,12 +1,12 @@
 {
     "id": "mmq3xsy12ppljghdl",
-    "title": "Untitled",
-    "icon": "emoji:👽",
+    "title": "Untitlede",
+    "icon": "emoji:\ud83d\udc7d",
     "content": [
         {
-            "id": "blk_mn05b73i2nsrg",
+            "id": "blk_mnl9xvv0vzxzb",
             "type": "p",
-            "content": "",
+            "content": "vdfd",
             "checked": false,
             "open": false,
             "indent": 0
@@ -16,9 +16,9 @@
     "isFavorite": false,
     "isDeleted": false,
     "createdAt": 1773479558089,
-    "updatedAt": 1774086557000,
+    "updatedAt": 1775364095000,
     "cover": {
-        "value": "url(data/workspaces/mmtij76gme8xxgw49/images/img_69b8717ce10b63.79430531.gif)",
+        "value": "url(data\/workspaces\/mmtij76gme8xxgw49\/images\/img_69b8717ce10b63.79430531.gif)",
         "type": "image",
         "fit": "cover"
     }

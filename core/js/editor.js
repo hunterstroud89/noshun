@@ -451,8 +451,8 @@ const Editor = {
         const tag = e.target.tagName;
         if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
         if (e.target.closest('.block-menu, .block-context-menu, .table-controls, .db-controls, .db-toolbar, .slash-menu, .format-toolbar')) return;
-        // If the click lands on block-content (editable text), let native editing work
-        if (e.target.closest('.block-content')) return;
+        // If the click lands on editable content (block text or page title), let native editing work
+        if (e.target.closest('.block-content, .page-title, [contenteditable]')) return;
 
         // Clicked on empty space — start marquee
         this.clearBlockSelection();

@@ -1,7 +1,7 @@
 const CACHE_NAME = 'notion-clone-v42';
 const ASSETS = [
     './',
-    './index.php',
+    './index.html',
     './core/css/style.css',
     './core/js/icons.js',
     './core/js/storage.js',
@@ -66,7 +66,7 @@ self.addEventListener('fetch', (event) => {
         }).catch(() => {
             // Return offline page for navigation requests, empty response for others
             if (event.request.mode === 'navigate') {
-                return caches.match('./index.php');
+                return caches.match('./index.html');
             }
             return new Response('', { status: 503, statusText: 'Offline' });
         })
