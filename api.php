@@ -79,7 +79,7 @@ try {
                     'createdAt' => $input['createdAt'] ?? time() * 1000,
                     'updatedAt' => time() * 1000
                 ];
-                file_put_contents("$wsDir/settings.json", json_encode($settings, JSON_PRETTY_PRINT));
+                file_put_contents("$wsDir/settings.json", json_encode($settings, JSON_PRETTY_PRINT), LOCK_EX);
                 echo json_encode(['id' => $wsId, 'name' => $settings['name'], 'icon' => $settings['icon']]);
             } else {
                 http_response_code(405);
@@ -131,7 +131,7 @@ try {
                     $file = "$dataDir/$pageId.json";
                     $input['createdAt'] = $input['createdAt'] ?? time() * 1000;
                     $input['updatedAt'] = time() * 1000;
-                    file_put_contents($file, json_encode($input, JSON_PRETTY_PRINT));
+                    file_put_contents($file, json_encode($input, JSON_PRETTY_PRINT), LOCK_EX);
                     echo json_encode($input);
                     break;
 
@@ -156,7 +156,7 @@ try {
                     $existing = json_decode(file_get_contents($file), true);
                     $merged = array_merge($existing, $input);
                     $merged['updatedAt'] = time() * 1000;
-                    file_put_contents($file, json_encode($merged, JSON_PRETTY_PRINT));
+                    file_put_contents($file, json_encode($merged, JSON_PRETTY_PRINT), LOCK_EX);
                     echo json_encode($merged);
                     break;
 
@@ -209,7 +209,7 @@ try {
                 }
                 $merged = array_merge($existing, $input);
                 $merged['updatedAt'] = time() * 1000;
-                file_put_contents($file, json_encode($merged, JSON_PRETTY_PRINT));
+                file_put_contents($file, json_encode($merged, JSON_PRETTY_PRINT), LOCK_EX);
                 echo json_encode($merged);
             } else {
                 http_response_code(405);
@@ -332,13 +332,13 @@ try {
                         $clientUpdated = $clientPage['updatedAt'] ?? 0;
                         $serverUpdated = $serverPage['updatedAt'] ?? 0;
                         if ($clientUpdated > $serverUpdated) {
-                            file_put_contents($file, json_encode($clientPage, JSON_PRETTY_PRINT));
+                            file_put_contents($file, json_encode($clientPage, JSON_PRETTY_PRINT), LOCK_EX);
                             $serverPages[$id] = $clientPage;
                         } elseif ($serverUpdated > $clientUpdated) {
                             $conflicts[] = $id;
                         }
                     } else {
-                        file_put_contents($file, json_encode($clientPage, JSON_PRETTY_PRINT));
+                        file_put_contents($file, json_encode($clientPage, JSON_PRETTY_PRINT), LOCK_EX);
                         $serverPages[$id] = $clientPage;
                     }
                 }

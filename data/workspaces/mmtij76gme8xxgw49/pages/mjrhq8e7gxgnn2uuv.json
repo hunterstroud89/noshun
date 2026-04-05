@@ -10,14 +10,6 @@
             "checked": false,
             "open": false,
             "indent": 0
-        },
-        {
-            "id": "blk_mn05c2v95nol8",
-            "type": "p",
-            "content": "<br>",
-            "checked": false,
-            "open": false,
-            "indent": 0
         }
     ],
     "parentId": null,
@@ -26,7 +18,7 @@
     "createdAt": 1767032838655,
     "updatedAt": 1774086575000,
     "cover": {
-        "value": "url(data\/workspaces\/mmtij76gme8xxgw49\/images\/img_69b863710aa346.39583931.png)",
+        "value": "url(data/workspaces/mmtij76gme8xxgw49/images/img_69b863710aa346.39583931.png)",
         "type": "image",
         "fit": "cover"
     }

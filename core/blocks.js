@@ -263,7 +263,7 @@ function createBlockElement(type = 'paragraph', content = '', options = {}) {
                 const src = content.startsWith('<img') ? content.match(/src="([^"]+)"/)?.[1] || content : content;
                 imgWrapper.innerHTML = `
                     <div class="image-container">
-                        <img src="${src}" alt="Image" />
+                        <img src="" alt="Image" />
                         <div class="image-resize-handle left"></div>
                         <div class="image-resize-handle right"></div>
                         <div class="image-actions">
@@ -276,6 +276,7 @@ function createBlockElement(type = 'paragraph', content = '', options = {}) {
                         </div>
                     </div>
                 `;
+                imgWrapper.querySelector('img').src = src;
                 // Restore saved width/alignment
                 if (options.width) {
                     imgWrapper.querySelector('.image-container').style.width = options.width;
@@ -447,19 +448,31 @@ function createBlockElement(type = 'paragraph', content = '', options = {}) {
 function showBlockContextMenu(block, anchor) {
     // Remove any existing context menu
     document.querySelectorAll('.block-context-menu').forEach(m => m.remove());
+
+    // Check if multiple blocks are selected
+    const selectedBlocks = typeof Editor !== 'undefined' ? Editor.getSelectedBlocks() : [];
+    const isMulti = selectedBlocks.length > 1 && selectedBlocks.includes(block);
     
     const menu = document.createElement('div');
     menu.className = 'block-context-menu';
-    menu.innerHTML = `
-        <button class="bcm-item" data-action="delete"><span class="bcm-icon">&#x2715;</span> Delete</button>
-        <button class="bcm-item" data-action="duplicate"><span class="bcm-icon">&#x2398;</span> Duplicate</button>
-        <div class="bcm-divider"></div>
-        <button class="bcm-item" data-action="turn-text"><span class="bcm-icon">T</span> Text</button>
-        <button class="bcm-item" data-action="turn-h1"><span class="bcm-icon">H1</span> Heading 1</button>
-        <button class="bcm-item" data-action="turn-h2"><span class="bcm-icon">H2</span> Heading 2</button>
-        <button class="bcm-item" data-action="turn-bullet"><span class="bcm-icon">&bull;</span> Bulleted list</button>
-        <button class="bcm-item" data-action="turn-todo"><span class="bcm-icon">&#x2610;</span> To-do</button>
-    `;
+
+    if (isMulti) {
+        menu.innerHTML = `
+            <button class="bcm-item" data-action="delete-selected"><span class="bcm-icon">&#x2715;</span> Delete ${selectedBlocks.length} blocks</button>
+            <button class="bcm-item" data-action="duplicate-selected"><span class="bcm-icon">&#x2398;</span> Duplicate ${selectedBlocks.length} blocks</button>
+        `;
+    } else {
+        menu.innerHTML = `
+            <button class="bcm-item" data-action="delete"><span class="bcm-icon">&#x2715;</span> Delete</button>
+            <button class="bcm-item" data-action="duplicate"><span class="bcm-icon">&#x2398;</span> Duplicate</button>
+            <div class="bcm-divider"></div>
+            <button class="bcm-item" data-action="turn-text"><span class="bcm-icon">T</span> Text</button>
+            <button class="bcm-item" data-action="turn-h1"><span class="bcm-icon">H1</span> Heading 1</button>
+            <button class="bcm-item" data-action="turn-h2"><span class="bcm-icon">H2</span> Heading 2</button>
+            <button class="bcm-item" data-action="turn-bullet"><span class="bcm-icon">&bull;</span> Bulleted list</button>
+            <button class="bcm-item" data-action="turn-todo"><span class="bcm-icon">&#x2610;</span> To-do</button>
+        `;
+    }
     
     // Position relative to anchor
     const rect = anchor.getBoundingClientRect();
@@ -482,14 +495,31 @@ function showBlockContextMenu(block, anchor) {
         if (!btn) return;
         const action = btn.dataset.action;
         
-        if (action === 'delete') {
+        if (action === 'delete-selected') {
+            selectedBlocks.forEach(b => b.remove());
+            if (typeof Editor !== 'undefined') {
+                Editor.clearBlockSelection();
+                Editor.ensureTrailingBlock();
+            }
+            if (typeof saveCurrentPage === 'function') saveCurrentPage();
+        } else if (action === 'duplicate-selected') {
+            // Duplicate all selected blocks after the last selected one
+            const last = selectedBlocks[selectedBlocks.length - 1];
+            let insertAfter = last;
+            selectedBlocks.forEach(b => {
+                const dup = _duplicateBlock(b);
+                insertAfter.parentNode.insertBefore(dup, insertAfter.nextSibling);
+                insertAfter = dup;
+            });
+            if (typeof Editor !== 'undefined') Editor.clearBlockSelection();
+            if (typeof saveCurrentPage === 'function') saveCurrentPage();
+        } else if (action === 'delete') {
             block.remove();
             if (typeof Editor !== 'undefined') Editor.ensureTrailingBlock();
             if (typeof saveCurrentPage === 'function') saveCurrentPage();
         } else if (action === 'duplicate') {
-            const clone = block.cloneNode(true);
-            clone.setAttribute('data-id', generateBlockId());
-            block.parentNode.insertBefore(clone, block.nextSibling);
+            const newBlock = _duplicateBlock(block);
+            block.parentNode.insertBefore(newBlock, block.nextSibling);
             if (typeof saveCurrentPage === 'function') saveCurrentPage();
         } else if (action.startsWith('turn-')) {
             const typeMap = { 'turn-text': 'paragraph', 'turn-h1': 'heading1', 'turn-h2': 'heading2', 'turn-bullet': 'bulletList', 'turn-todo': 'todo' };
@@ -507,6 +537,42 @@ function showBlockContextMenu(block, anchor) {
         }
     };
     setTimeout(() => document.addEventListener('mousedown', close), 0);
+}
+
+// Helper to duplicate a single block
+function _duplicateBlock(block) {
+    const bType = block.getAttribute('data-type');
+    const typeKey = _typeKeyMap[bType] || 'paragraph';
+    let dupContent = '';
+    const dupOpts = {};
+    if (bType === 'image') {
+        const img = block.querySelector('img');
+        dupContent = img ? img.src : '';
+        const ctr = block.querySelector('.image-container');
+        if (ctr) {
+            if (ctr.style.width) dupOpts.width = ctr.style.width;
+            if (ctr.dataset.align) dupOpts.align = ctr.dataset.align;
+        }
+    } else if (bType === 'table') {
+        const tbl = block.querySelector('table');
+        dupContent = tbl ? JSON.stringify(getTableData(tbl)) : '';
+    } else if (bType === 'database') {
+        const dbW = block.querySelector('.database-block');
+        dupContent = dbW?._dbData ? JSON.stringify(dbW._dbData) : '';
+    } else if (bType === 'synced') {
+        const sW = block.querySelector('.synced-block');
+        dupContent = sW?.dataset.syncId || '';
+    } else {
+        dupContent = block.querySelector('.block-content')?.innerHTML || '';
+    }
+    const newBlock = createBlockElement(typeKey, dupContent, dupOpts);
+    if (block.classList.contains('checked')) newBlock.classList.add('checked');
+    if (block.classList.contains('open')) newBlock.classList.add('open');
+    if (block.dataset.indent) {
+        newBlock.dataset.indent = block.dataset.indent;
+        newBlock.style.marginLeft = block.style.marginLeft;
+    }
+    return newBlock;
 }
 
 // Get placeholder text for block type
@@ -529,7 +595,7 @@ function getPlaceholder(type) {
 
 // Generate unique block ID
 function generateBlockId() {
-    return 'blk_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+    return 'blk_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
 }
 
 // Convert block to different type
@@ -561,7 +627,7 @@ function convertBlockType(blockEl, newType) {
 // Serialize blocks to JSON for storage
 function serializeBlocks(containerEl) {
     const blocks = containerEl.querySelectorAll('.block');
-    return Array.from(blocks).map(block => {
+    const result = Array.from(blocks).map(block => {
         const type = block.getAttribute('data-type');
         let content = '';
         
@@ -599,6 +665,16 @@ function serializeBlocks(containerEl) {
         }
         return result;
     });
+    // Strip trailing empty paragraphs — they are a UI-only affordance
+    while (result.length > 1) {
+        const last = result[result.length - 1];
+        if (last.type === 'p' && (!last.content || last.content === '' || last.content === '<br>')) {
+            result.pop();
+        } else {
+            break;
+        }
+    }
+    return result;
 }
 
 // Reverse map: dataType → BlockTypes key (built once)
@@ -632,13 +708,24 @@ function deserializeBlocks(blocksData) {
 
 // Number the numbered list items
 function updateNumberedLists(containerEl) {
-    let number = 0;
+    const counters = [0];
+    let lastIndent = 0;
     containerEl.querySelectorAll('.block').forEach(block => {
         if (block.getAttribute('data-type') === 'numbered') {
-            number++;
-            block.setAttribute('data-number', number);
+            const indent = parseInt(block.dataset.indent || '0', 10);
+            if (indent > lastIndent) {
+                counters.push(0);
+            } else if (indent < lastIndent) {
+                const diff = lastIndent - indent;
+                for (let i = 0; i < diff && counters.length > 1; i++) counters.pop();
+            }
+            counters[counters.length - 1]++;
+            block.setAttribute('data-number', counters[counters.length - 1]);
+            lastIndent = indent;
         } else {
-            number = 0;
+            counters.length = 1;
+            counters[0] = 0;
+            lastIndent = 0;
         }
     });
 }
@@ -691,7 +778,7 @@ function setupImageUploadUI(wrapper, block) {
 function setImageContent(wrapper, block, src) {
     wrapper.innerHTML = `
         <div class="image-container">
-            <img src="${src}" alt="Image" />
+            <img src="" alt="Image" />
             <div class="image-resize-handle left"></div>
             <div class="image-resize-handle right"></div>
             <div class="image-actions">
@@ -704,6 +791,7 @@ function setImageContent(wrapper, block, src) {
             </div>
         </div>
     `;
+    wrapper.querySelector('img').src = src;
     setupImageActions(wrapper, block);
     setupImageResize(wrapper, block);
     if (typeof saveCurrentPage === 'function') saveCurrentPage();
@@ -1071,18 +1159,6 @@ function buildDatabase(wrapper, dbData, block) {
         headRow.appendChild(th);
     });
     
-    // Add column button in header
-    const thAdd = document.createElement('th');
-    thAdd.className = 'db-th db-add-col';
-    thAdd.textContent = '+';
-    thAdd.title = 'Add column';
-    thAdd.addEventListener('click', () => {
-        dbData.columns.push({ name: 'Column', type: 'text' });
-        dbData.rows.forEach(r => r.cells.push(''));
-        buildDatabase(wrapper, dbData, block);
-        save();
-    });
-    headRow.appendChild(thAdd);
     thead.appendChild(headRow);
     table.appendChild(thead);
     
@@ -1099,10 +1175,6 @@ function buildDatabase(wrapper, dbData, block) {
             
             tr.appendChild(td);
         });
-        // Empty cell under add-col
-        const tdEmpty = document.createElement('td');
-        tdEmpty.className = 'db-td db-td-spacer';
-        tr.appendChild(tdEmpty);
         tbody.appendChild(tr);
     });
     table.appendChild(tbody);
@@ -1113,6 +1185,7 @@ function buildDatabase(wrapper, dbData, block) {
     controls.className = 'db-controls';
     controls.innerHTML = `
         <button class="db-ctrl-btn" data-action="add-row">+ New</button>
+        <button class="db-ctrl-btn" data-action="add-col">+ Col</button>
         <button class="db-ctrl-btn" data-action="del-row">− Row</button>
         <button class="db-ctrl-btn" data-action="del-col">− Col</button>
     `;
@@ -1123,6 +1196,9 @@ function buildDatabase(wrapper, dbData, block) {
         if (a === 'add-row') {
             const newCells = dbData.columns.map(c => c.type === 'checkbox' ? false : '');
             dbData.rows.push({ cells: newCells });
+        } else if (a === 'add-col') {
+            dbData.columns.push({ name: 'Column', type: 'text' });
+            dbData.rows.forEach(r => r.cells.push(''));
         } else if (a === 'del-row' && dbData.rows.length > 1) {
             dbData.rows.pop();
         } else if (a === 'del-col' && dbData.columns.length > 1) {

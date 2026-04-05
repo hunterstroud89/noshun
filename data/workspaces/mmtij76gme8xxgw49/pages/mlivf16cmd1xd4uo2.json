@@ -4,7 +4,7 @@
     "icon": "emoji:\ud83c\udf3f",
     "content": [
         {
-            "id": "blk_mn05uovg05l2s",
+            "id": "blk_mnl8onpfedsx2",
             "type": "database",
             "content": "{\"columns\":[{\"name\":\"Name\",\"type\":\"text\"},{\"name\":\"Tags\",\"type\":\"select\",\"options\":[]},{\"name\":\"Status\",\"type\":\"checkbox\"}],\"rows\":[{\"cells\":[\"false\",\"\",false]},{\"cells\":[\"false\",\"\",false]}],\"sort\":null,\"filter\":null}",
             "checked": false,
@@ -12,7 +12,7 @@
             "indent": 0
         },
         {
-            "id": "blk_mn05uovhqn8c7",
+            "id": "blk_mnl8onpfp1uui",
             "type": "p",
             "content": "<br>",
             "checked": false,
@@ -20,7 +20,7 @@
             "indent": 0
         },
         {
-            "id": "blk_mn05uovhlmad0",
+            "id": "blk_mnl8onpff0mam",
             "type": "p",
             "content": "this is the text im talking about",
             "checked": false,
@@ -28,7 +28,7 @@
             "indent": 0
         },
         {
-            "id": "blk_mn05uovh8kox7",
+            "id": "blk_mnl8onpfumzkl",
             "type": "p",
             "content": "gdg",
             "checked": false,
@@ -36,7 +36,7 @@
             "indent": 0
         },
         {
-            "id": "blk_mn05uovhshdle",
+            "id": "blk_mnl8onpfhprsw",
             "type": "p",
             "content": "right here it should line up with the header where it says broccoli rob",
             "checked": false,
@@ -44,7 +44,7 @@
             "indent": 0
         },
         {
-            "id": "blk_mn05uovhf6ixv",
+            "id": "blk_mnl8onpfyjc5p",
             "type": "image",
             "content": "http:\/\/10.0.0.59:8880\/projects\/notion-clone-2\/data\/workspaces\/mmtij76gme8xxgw49\/images\/img_69b90b68c18ab5.59495154.jpg",
             "checked": false,
@@ -54,57 +54,33 @@
             "align": "left"
         },
         {
-            "id": "blk_mn05uoviqs7av",
+            "id": "blk_mnl8onpg64aod",
             "type": "p",
-            "content": "",
+            "content": "<br>",
             "checked": false,
             "open": false,
             "indent": 0
         },
         {
-            "id": "blk_mn05uoviatwfy",
+            "id": "blk_mnl8onpgo5rpg",
             "type": "p",
-            "content": "",
+            "content": "hi",
             "checked": false,
             "open": false,
             "indent": 0
         },
         {
-            "id": "blk_mn05uovimrdih",
+            "id": "blk_mnl8onphdxx8u",
             "type": "p",
-            "content": "",
+            "content": "vfvf",
             "checked": false,
             "open": false,
             "indent": 0
         },
         {
-            "id": "blk_mn05uovio96ji",
+            "id": "blk_mnl8oq1p9b39l",
             "type": "p",
-            "content": "",
-            "checked": false,
-            "open": false,
-            "indent": 0
-        },
-        {
-            "id": "blk_mn05uovie8ya3",
-            "type": "p",
-            "content": "",
-            "checked": false,
-            "open": false,
-            "indent": 0
-        },
-        {
-            "id": "blk_mn05uovildk4t",
-            "type": "p",
-            "content": "",
-            "checked": false,
-            "open": false,
-            "indent": 0
-        },
-        {
-            "id": "blk_mn05uovigrqdv",
-            "type": "p",
-            "content": "",
+            "content": "vfvf",
             "checked": false,
             "open": false,
             "indent": 0
@@ -114,7 +90,7 @@
     "isFavorite": true,
     "isDeleted": false,
     "createdAt": 1770865199796,
-    "updatedAt": 1774087443000,
+    "updatedAt": 1775361997000,
     "cover": {
         "value": "url(data\/workspaces\/mmtij76gme8xxgw49\/images\/img_69b865c32c3601.78400303.jpg)",
         "type": "image",

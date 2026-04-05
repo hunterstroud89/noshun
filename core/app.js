@@ -9,6 +9,7 @@ const App = {
     currentPage: null,
     commandPaletteVisible: false,
     sidebarCollapsed: false,
+    _expandedPages: new Set(),
     
     // SVG fallback icon for pages without a custom icon
     defaultIcon: Icons.get('page', 20),
@@ -437,7 +438,6 @@ const App = {
 
     createPageListItem(page, depth = 0, childMap = {}) {
         const hasChildren = childMap[page.id] && childMap[page.id].length > 0;
-        if (!this._expandedPages) this._expandedPages = new Set();
         const isExpanded = this._expandedPages.has(page.id);
         
         const item = document.createElement('div');
@@ -1014,6 +1014,7 @@ const App = {
 
     toggleTheme() {
         const isDark = document.body.classList.toggle('dark-mode');
+        document.body.classList.toggle('light-mode', !isDark);
         Storage.setPref('theme', isDark ? 'dark' : 'light');
     },
     

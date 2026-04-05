@@ -631,12 +631,33 @@ body {
     pointer-events: none;
 }
 
+/* Multi-block selection */
+.block.block-selected {
+    background: rgba(140, 140, 140, 0.15);
+    border-radius: var(--radius-sm);
+}
+
+.block.block-selected .block-content {
+    caret-color: transparent;
+}
+
+/* Marquee selection rectangle */
+.selection-marquee {
+    display: none;
+    position: absolute;
+    background: rgba(140, 140, 140, 0.08);
+    border: 1.5px solid rgba(140, 140, 140, 0.4);
+    border-radius: 3px;
+    pointer-events: none;
+    z-index: 50;
+}
+
 /* Drop indicator line */
 .drop-indicator {
     display: none;
     position: fixed;
     height: 1px;
-    background: rgba(35, 131, 226, 0.5);
+    background: rgba(140, 140, 140, 0.5);
     z-index: 999;
     pointer-events: none;
 }
@@ -735,7 +756,14 @@ body {
 .block-content {
     flex: 1;
     outline: none;
+    -webkit-appearance: none;
     min-height: 1.5em;
+}
+
+.block-content:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
 }
 
 .block-content:empty::before {
@@ -1017,17 +1045,19 @@ body {
 
 .notion-table td:focus,
 .notion-table th:focus {
-    box-shadow: inset 0 0 0 2px var(--accent-color);
+    box-shadow: inset 0 0 0 2px var(--border-color);
 }
 
 .table-controls {
-    display: none;
+    display: flex;
     gap: 4px;
     margin-top: 6px;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
 }
 
 .table-block:hover .table-controls {
-    display: flex;
+    opacity: 1;
 }
 
 .table-ctrl-btn {
@@ -1057,6 +1087,12 @@ body {
     gap: 4px;
     margin-bottom: 6px;
     position: relative;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.database-block:hover .db-toolbar {
+    opacity: 1;
 }
 
 .db-toolbar-btn {
@@ -1145,18 +1181,7 @@ body {
     min-width: 120px;
 }
 
-.db-th.db-add-col {
-    min-width: 32px;
-    width: 32px;
-    text-align: center;
-    cursor: pointer;
-    color: var(--text-muted);
-    font-size: 16px;
-}
 
-.db-th.db-add-col:hover {
-    background: var(--bg-hover);
-}
 
 .db-col-name {
     outline: none;
@@ -1190,11 +1215,7 @@ body {
     position: relative;
 }
 
-.db-td.db-td-spacer {
-    min-width: 32px;
-    width: 32px;
-    border: none;
-}
+
 
 .db-text-cell {
     display: block;
@@ -1275,13 +1296,15 @@ body {
 }
 
 .db-controls {
-    display: none;
+    display: flex;
     gap: 4px;
     margin-top: 6px;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
 }
 
 .database-block:hover .db-controls {
-    display: flex;
+    opacity: 1;
 }
 
 .db-ctrl-btn {
@@ -2353,7 +2376,7 @@ body {
 
 /* Selection */
 ::selection {
-    background: rgba(35, 131, 226, 0.3);
+    background: rgba(140, 140, 140, 0.3);
 }
 
 /* Right Sidebar */
@@ -2570,11 +2593,6 @@ button:focus-visible,
 }
 
 /* Make hover-only UI accessible via focus-within */
-.block:focus-within > .block-menu {
-    opacity: 1;
-    pointer-events: auto;
-}
-
 .page-item:focus-within .page-actions {
     display: flex;
 }

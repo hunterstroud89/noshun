@@ -345,11 +345,8 @@ if (is_dir($wsDir)) {
     <script src="core/features.js"></script>
     <script src="core/app.js"></script>
     <script>
-        // Remove any old service workers — they cause fetch issues
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(regs => {
-                regs.forEach(r => r.unregister());
-            });
+            navigator.serviceWorker.register('./sw.js');
         }
     </script>
 </body>

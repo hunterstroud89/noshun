@@ -19,6 +19,12 @@ const Editor = {
     draggedBlock: null,
     isComposing: false,
     _loading: false,
+    // Marquee selection state
+    _marqueeEl: null,
+    _marqueeActive: false,
+    _marqueeStartX: 0,
+    _marqueeStartY: 0,
+    _marqueeScrollEl: null,
 
     init(containerId) {
         this.container = document.getElementById(containerId);
@@ -68,6 +74,20 @@ const Editor = {
         this.container.addEventListener('dragleave', (e) => this.handleDragLeave(e));
         this.container.addEventListener('drop', (e) => this.handleDrop(e));
         this.container.addEventListener('dragend', (e) => this.handleDragEnd(e));
+
+        // Multi-block marquee selection — listen on the page-container (scrollable area)
+        this._marqueeScrollEl = this.container.closest('.page-container') || this.container.parentElement;
+        this._marqueeEl = document.createElement('div');
+        this._marqueeEl.className = 'selection-marquee';
+        this._marqueeScrollEl.style.position = 'relative';
+        this._marqueeScrollEl.appendChild(this._marqueeEl);
+
+        this._marqueeScrollEl.addEventListener('mousedown', (e) => this._onMarqueeDown(e));
+        document.addEventListener('mousemove', (e) => this._onMarqueeMove(e));
+        document.addEventListener('mouseup', (e) => this._onMarqueeUp(e));
+        document.addEventListener('selectstart', (e) => {
+            if (this._marqueeActive) e.preventDefault();
+        });
         
         // Create persistent drop indicator line
         this.dropIndicator = document.createElement('div');
@@ -102,6 +122,25 @@ const Editor = {
     },
 
     handleGlobalKeydown(e) {
+        // Multi-block selection: Delete/Backspace removes selected blocks, Escape clears
+        const selected = this.getSelectedBlocks();
+        if (selected.length > 0) {
+            if (e.key === 'Backspace' || e.key === 'Delete') {
+                e.preventDefault();
+                selected.forEach(b => b.remove());
+                this.clearBlockSelection();
+                this.ensureTrailingBlock();
+                updateNumberedLists(this.container);
+                this.scheduleSave();
+                return;
+            }
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                this.clearBlockSelection();
+                return;
+            }
+        }
+
         // Slash menu navigation
         if (this.slashMenuVisible) {
             if (e.key === 'ArrowDown') {
@@ -135,6 +174,8 @@ const Editor = {
             if (this.slashMenuVisible) return;
             
             e.preventDefault();
+            // Don't create another empty block from the trailing empty paragraph
+            if (target.textContent === '' && !block.nextElementSibling) return;
             this.createNewBlockAfter(block);
         }
         
@@ -240,6 +281,11 @@ const Editor = {
 
     handleClick(e) {
         const target = e.target;
+
+        // Clear block selection on any click
+        if (this.getSelectedBlocks().length && !this._marqueeActive) {
+            this.clearBlockSelection();
+        }
         
         // Focus empty editor
         if (target === this.container && this.container.children.length === 0) {
@@ -395,6 +441,97 @@ const Editor = {
             const block = createBlockElement('paragraph');
             this.container.appendChild(block);
         }
+    },
+
+    // ===== Marquee block selection =====
+    _onMarqueeDown(e) {
+        // Only left button
+        if (e.button !== 0) return;
+        // Ignore clicks on interactive elements inside blocks
+        const tag = e.target.tagName;
+        if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+        if (e.target.closest('.block-menu, .block-context-menu, .table-controls, .db-controls, .db-toolbar, .slash-menu, .format-toolbar')) return;
+        // If the click lands on block-content (editable text), let native editing work
+        if (e.target.closest('.block-content')) return;
+
+        // Clicked on empty space — start marquee
+        this.clearBlockSelection();
+        const scrollEl = this._marqueeScrollEl;
+        const rect = scrollEl.getBoundingClientRect();
+        this._marqueeStartX = e.clientX - rect.left + scrollEl.scrollLeft;
+        this._marqueeStartY = e.clientY - rect.top + scrollEl.scrollTop;
+        this._marqueeActive = true;
+
+        // Collapse any text selection and blur
+        window.getSelection().removeAllRanges();
+        document.activeElement?.blur();
+    },
+
+    _onMarqueeMove(e) {
+        if (!this._marqueeActive || e.buttons !== 1) {
+            if (this._marqueeActive) this._onMarqueeUp(e);
+            return;
+        }
+
+        e.preventDefault();
+
+        const scrollEl = this._marqueeScrollEl;
+        const rect = scrollEl.getBoundingClientRect();
+        const curX = e.clientX - rect.left + scrollEl.scrollLeft;
+        const curY = e.clientY - rect.top + scrollEl.scrollTop;
+
+        const x = Math.min(this._marqueeStartX, curX);
+        const y = Math.min(this._marqueeStartY, curY);
+        const w = Math.abs(curX - this._marqueeStartX);
+        const h = Math.abs(curY - this._marqueeStartY);
+
+        // Show the marquee rectangle
+        const m = this._marqueeEl;
+        m.style.display = 'block';
+        m.style.left = x + 'px';
+        m.style.top = y + 'px';
+        m.style.width = w + 'px';
+        m.style.height = h + 'px';
+
+        // Hit-test blocks against the marquee rect (in scroll-coordinates)
+        const marqueeRect = { left: x, top: y, right: x + w, bottom: y + h };
+        const containerRect = scrollEl.getBoundingClientRect();
+
+        this.container.querySelectorAll('.block').forEach(block => {
+            const br = block.getBoundingClientRect();
+            // Convert block rect to scroll-relative coordinates
+            const blockRect = {
+                left: br.left - containerRect.left + scrollEl.scrollLeft,
+                top: br.top - containerRect.top + scrollEl.scrollTop,
+                right: br.right - containerRect.left + scrollEl.scrollLeft,
+                bottom: br.bottom - containerRect.top + scrollEl.scrollTop
+            };
+            const intersects =
+                marqueeRect.left < blockRect.right &&
+                marqueeRect.right > blockRect.left &&
+                marqueeRect.top < blockRect.bottom &&
+                marqueeRect.bottom > blockRect.top;
+            block.classList.toggle('block-selected', intersects);
+        });
+    },
+
+    _onMarqueeUp(e) {
+        if (!this._marqueeActive) return;
+        this._marqueeActive = false;
+        this._marqueeEl.style.display = 'none';
+
+        // If blocks are selected, keep them highlighted
+        if (this.getSelectedBlocks().length) {
+            window.getSelection().removeAllRanges();
+        }
+    },
+
+    clearBlockSelection() {
+        this.container.querySelectorAll('.block-selected').forEach(b => b.classList.remove('block-selected'));
+    },
+
+    getSelectedBlocks() {
+        return Array.from(this.container.querySelectorAll('.block-selected'));
     },
 
     // Markdown shortcuts

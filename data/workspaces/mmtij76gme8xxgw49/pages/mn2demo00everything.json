@@ -1,0 +1,577 @@
+{
+    "id": "mn2demo00everything",
+    "title": "Kitchen Sink — Everything the Editor Can Do",
+    "icon": "emoji:🧪",
+    "content": [
+        {
+            "id": "blk_mnl7p4tij2xjs",
+            "type": "h1",
+            "content": "Heading 1 — The Big Title",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tic1hcm",
+            "type": "p",
+            "content": "This page shows off <strong>every block type</strong> the editor supports. Use it as a reference or a playground. Try <em>italic</em>, <u>underline</u>, <s>strikethrough</s>, <code>inline code</code>, and <mark style=\"background: rgba(255, 212, 0, 0.4); padding: 0 2px; border-radius: 2px;\">highlighted text</mark>.",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti3g6al",
+            "type": "h2",
+            "content": "Heading 2 — A Section",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tik9non",
+            "type": "p",
+            "content": "Paragraphs are the default block. Type <code>/</code> at the start of any block to switch types. You can also use markdown shortcuts like <code># </code> for headings or <code>- </code> for bullets.",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tiz3381",
+            "type": "h3",
+            "content": "Heading 3 — A Subsection",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tiux9u7",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tin9sq6",
+            "type": "h2",
+            "content": "Bulleted List",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti8aa83",
+            "type": "bullet",
+            "content": "First bullet item",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tiekyiq",
+            "type": "bullet",
+            "content": "Second bullet item",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tioef9y",
+            "type": "bullet",
+            "content": "Nested bullet (indented with Tab)",
+            "checked": false,
+            "open": false,
+            "indent": 1
+        },
+        {
+            "id": "blk_mnl7p4ti7b761",
+            "type": "bullet",
+            "content": "Even deeper nesting",
+            "checked": false,
+            "open": false,
+            "indent": 2
+        },
+        {
+            "id": "blk_mnl7p4ti89ubi",
+            "type": "bullet",
+            "content": "Back to top level",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tigok0l",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tihopkw",
+            "type": "h2",
+            "content": "Numbered List",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti9q8em",
+            "type": "numbered",
+            "content": "First step",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti4r1i0",
+            "type": "numbered",
+            "content": "Second step",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti7zsvu",
+            "type": "numbered",
+            "content": "Sub-step A (indented)",
+            "checked": false,
+            "open": false,
+            "indent": 1
+        },
+        {
+            "id": "blk_mnl7p4ti4cgpj",
+            "type": "numbered",
+            "content": "Sub-step B",
+            "checked": false,
+            "open": false,
+            "indent": 1
+        },
+        {
+            "id": "blk_mnl7p4tithdvi",
+            "type": "numbered",
+            "content": "Third step — numbering continues correctly",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tivdg7s",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tihrwxz",
+            "type": "h2",
+            "content": "To-Do List",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tihfbxt",
+            "type": "todo",
+            "content": "Try checking this off ✓",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti015bp",
+            "type": "todo",
+            "content": "This one is already done",
+            "checked": true,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tibvqpv",
+            "type": "todo",
+            "content": "A sub-task (indented)",
+            "checked": false,
+            "open": false,
+            "indent": 1
+        },
+        {
+            "id": "blk_mnl7p4tipui8k",
+            "type": "todo",
+            "content": "Another thing to do",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti2lg3z",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti7wd9h",
+            "type": "h2",
+            "content": "Toggle List",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti4zlmx",
+            "type": "toggle",
+            "content": "Click the arrow to expand me!",
+            "checked": false,
+            "open": true,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tiyduhv",
+            "type": "p",
+            "content": "Toggles are great for hiding details, FAQs, or keeping pages tidy.",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tipu34m",
+            "type": "toggle",
+            "content": "Another toggle (collapsed by default)",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tivco5d",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tiolsz1",
+            "type": "h2",
+            "content": "Quote",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tijfwc8",
+            "type": "quote",
+            "content": "The best way to predict the future is to invent it. — Alan Kay",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tiu2wlx",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tiy6co7",
+            "type": "h2",
+            "content": "Callout",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti5lyii",
+            "type": "callout",
+            "content": "💡 Callouts are great for tips, warnings, or important notes that need to stand out from the rest of the content.",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti2ld0m",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tifxebi",
+            "type": "h2",
+            "content": "Code Block",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4ti742aa",
+            "type": "code",
+            "content": "function greet(name) {\n    return `Hello, ${name}!`;\n}\n\nconsole.log(greet('World'));",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tizzgyx",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tiuhr5j",
+            "type": "h2",
+            "content": "Table",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tij9kfw",
+            "type": "p",
+            "content": "Tables support adding/removing rows and columns, and tab navigation between cells.",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tjy6g15",
+            "type": "table",
+            "content": "{\"rows\":[[\"Feature\",\"Status\",\"Notes\"],[\"Headings\",\"✅ Done\",\"H1, H2, H3\"],[\"Lists\",\"✅ Done\",\"Bullet, Numbered, Todo\"],[\"Formatting\",\"✅ Done\",\"Bold, Italic, Code, etc.\"],[\"Drag & Drop\",\"✅ Done\",\"Reorder blocks\"]],\"header\":true}",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tjw814h",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tj2ucqj",
+            "type": "h2",
+            "content": "Database",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tjxiyfo",
+            "type": "p",
+            "content": "Databases have typed columns (text, number, select, date, checkbox), plus sorting and filtering.",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tjjqx9w",
+            "type": "database",
+            "content": "{\"columns\":[{\"name\":\"Task\",\"type\":\"text\"},{\"name\":\"Priority\",\"type\":\"select\",\"options\":[\"High\",\"Medium\",\"Low\"]},{\"name\":\"Due Date\",\"type\":\"date\"},{\"name\":\"Done\",\"type\":\"checkbox\"}],\"rows\":[{\"cells\":[\"Build the editor\",\"High\",\"2026-04-01\",true]},{\"cells\":[\"Add database blocks\",\"High\",\"2026-04-02\",true]},{\"cells\":[\"Write demo page\",\"Medium\",\"2026-04-04\",false]},{\"cells\":[\"Celebrate 🎉\",\"Low\",\"\",false]}],\"sort\":null,\"filter\":null}",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tjdni5h",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkiooou",
+            "type": "h2",
+            "content": "Image",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkul5cz",
+            "type": "p",
+            "content": "Click the image placeholder below to upload a file or paste a URL. Images can be resized by dragging the handles and aligned left, center, or full-width.",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tk5txft",
+            "type": "image",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkbwt56",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkci17o",
+            "type": "h2",
+            "content": "Keyboard Shortcuts",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tktqkgi",
+            "type": "table",
+            "content": "{\"rows\":[[\"Shortcut\",\"Action\"],[\"⌘ + B\",\"Bold\"],[\"⌘ + I\",\"Italic\"],[\"⌘ + U\",\"Underline\"],[\"⌘ + K\",\"Command palette / Search\"],[\"⌘ + N\",\"New page\"],[\"⌘ + S\",\"Save\"],[\"⌘ + Z\",\"Undo\"],[\"⌘ + Shift + Z\",\"Redo\"],[\"Tab / Shift+Tab\",\"Indent / Outdent lists\"],[\"/ (slash)\",\"Block type menu\"]],\"header\":true}",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tk7d3wj",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkkqvlq",
+            "type": "h2",
+            "content": "Markdown Shortcuts",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tk1j5jb",
+            "type": "p",
+            "content": "Type these at the start of an empty block and they auto-convert:",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkj3ebt",
+            "type": "bullet",
+            "content": "<code># </code> → Heading 1",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tk096w9",
+            "type": "bullet",
+            "content": "<code>## </code> → Heading 2",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tken470",
+            "type": "bullet",
+            "content": "<code>### </code> → Heading 3",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkcex0e",
+            "type": "bullet",
+            "content": "<code>- </code> or <code>* </code> → Bulleted list",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkiovfb",
+            "type": "bullet",
+            "content": "<code>1. </code> → Numbered list",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tknyr5r",
+            "type": "bullet",
+            "content": "<code>[] </code> → To-do",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tk0rpxe",
+            "type": "bullet",
+            "content": "<code>&gt; </code> → Quote",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tk52ghy",
+            "type": "bullet",
+            "content": "<code>```</code> → Code block",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkhpmhm",
+            "type": "bullet",
+            "content": "<code>---</code> → Divider",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tk49syo",
+            "type": "bullet",
+            "content": "<code>!!! </code> → Callout",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tkgpnh9",
+            "type": "bullet",
+            "content": "<code>&gt;&gt; </code> → Toggle",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tk3upad",
+            "type": "divider",
+            "content": "",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        },
+        {
+            "id": "blk_mnl7p4tklinxa",
+            "type": "callout",
+            "content": "🎉 That's everything! Drag blocks to reorder, click the ⋮⋮ handle for the context menu, and use the icon/cover buttons at the top of any page to customize it.",
+            "checked": false,
+            "open": false,
+            "indent": 0
+        }
+    ],
+    "parentId": null,
+    "isFavorite": true,
+    "isDeleted": false,
+    "createdAt": 1775433600000,
+    "updatedAt": 1775360447000,
+    "cover": {
+        "value": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        "type": "gradient",
+        "fit": "cover"
+    }
+}
