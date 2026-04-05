@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $method = $_SERVER['REQUEST_METHOD'];
-$baseDir = __DIR__ . '/data/workspaces';
+$baseDir = __DIR__ . '/../../data/workspaces';
 
 if (!is_dir($baseDir)) {
     mkdir($baseDir, 0755, true);

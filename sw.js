@@ -2,14 +2,14 @@ const CACHE_NAME = 'notion-clone-v42';
 const ASSETS = [
     './',
     './index.php',
-    './ui/style.css',
-    './core/icons.js',
-    './core/storage.js',
-    './core/blocks.js',
-    './core/editor.js',
-    './core/features.js',
-    './core/history.js',
-    './core/app.js',
+    './core/css/style.css',
+    './core/js/icons.js',
+    './core/js/storage.js',
+    './core/js/blocks.js',
+    './core/js/editor.js',
+    './core/js/features.js',
+    './core/js/history.js',
+    './core/js/app.js',
     './manifest.json'
 ];
 
@@ -45,7 +45,7 @@ self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
     
     // Let API calls and data requests go straight to the server
-    if (url.pathname.includes('api.php') || url.pathname.includes('/data/')) {
+    if (url.pathname.includes('core/php/api.php') || url.pathname.includes('/data/')) {
         return;
     }
     

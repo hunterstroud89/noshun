@@ -17,7 +17,7 @@ const Storage = {
         // 1. Get available workspaces
         let workspaces = [];
         try {
-            const res = await fetch('api.php?action=workspaces');
+            const res = await fetch('core/php/api.php?action=workspaces');
             if (res.ok) workspaces = await res.json();
         } catch (e) {
             console.warn('Could not list workspaces:', e);
@@ -48,7 +48,7 @@ const Storage = {
     async createWorkspace(opts = {}) {
         const id = this.generateId();
         try {
-            const res = await fetch('api.php?action=workspaces', {
+            const res = await fetch('core/php/api.php?action=workspaces', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -87,7 +87,7 @@ const Storage = {
 
     async loadSettings() {
         try {
-            const res = await fetch(`api.php?action=settings&workspace=${encodeURIComponent(this._workspaceId)}`);
+            const res = await fetch(`core/php/api.php?action=settings&workspace=${encodeURIComponent(this._workspaceId)}`);
             if (res.ok) {
                 this._settings = await res.json();
             }
@@ -100,7 +100,7 @@ const Storage = {
     saveSettings() {
         clearTimeout(this._settingsTimer);
         this._settingsTimer = setTimeout(() => {
-            const url = `api.php?action=settings&workspace=${encodeURIComponent(this._workspaceId)}`;
+            const url = `core/php/api.php?action=settings&workspace=${encodeURIComponent(this._workspaceId)}`;
             const body = JSON.stringify(this._settings);
             if (document.visibilityState === 'hidden' && navigator.sendBeacon) {
                 navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }));
@@ -225,7 +225,7 @@ const Storage = {
     async uploadImage(file) {
         const formData = new FormData();
         formData.append('image', file);
-        const res = await fetch(`api.php?action=images&workspace=${encodeURIComponent(this._workspaceId)}`, {
+        const res = await fetch(`core/php/api.php?action=images&workspace=${encodeURIComponent(this._workspaceId)}`, {
             method: 'POST',
             body: formData
         });
@@ -239,7 +239,7 @@ const Storage = {
     // ---- Server operations ----
 
     async syncToServer(page) {
-        const url = `api.php?action=pages&workspace=${encodeURIComponent(this._workspaceId)}`;
+        const url = `core/php/api.php?action=pages&workspace=${encodeURIComponent(this._workspaceId)}`;
         const body = JSON.stringify(page);
 
         // Use sendBeacon during page teardown (refresh, tab close)
@@ -262,7 +262,7 @@ const Storage = {
 
     async deleteFromServer(id) {
         try {
-            const res = await fetch(`api.php?action=pages&workspace=${encodeURIComponent(this._workspaceId)}&id=${encodeURIComponent(id)}`, {
+            const res = await fetch(`core/php/api.php?action=pages&workspace=${encodeURIComponent(this._workspaceId)}&id=${encodeURIComponent(id)}`, {
                 method: 'DELETE'
             });
             return res.ok;
@@ -274,7 +274,7 @@ const Storage = {
 
     async loadFromServer() {
         try {
-            const res = await fetch(`api.php?action=pages&workspace=${encodeURIComponent(this._workspaceId)}`);
+            const res = await fetch(`core/php/api.php?action=pages&workspace=${encodeURIComponent(this._workspaceId)}`);
             if (res.ok) {
                 const data = await res.json();
                 this._pages = Array.isArray(data) ? data : (data.pages || []);

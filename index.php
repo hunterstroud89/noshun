@@ -24,7 +24,7 @@ if (is_dir($wsDir)) {
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#191919">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235C9CE6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z'/><polyline points='14 2 14 8 20 8'/><line x1='16' y1='13' x2='8' y2='13'/><line x1='16' y1='17' x2='8' y2='17'/></svg>">
-    <link rel="stylesheet" href="ui/style.css">
+    <link rel="stylesheet" href="core/css/style.css">
 </head>
 <body class="<?= htmlspecialchars($themeClass) ?>">
     <div id="app">
@@ -337,13 +337,13 @@ if (is_dir($wsDir)) {
         </div>
     </div>
 
-    <script src="core/icons.js"></script>
-    <script src="core/storage.js"></script>
-    <script src="core/blocks.js"></script>
-    <script src="core/editor.js"></script>
-    <script src="core/history.js"></script>
-    <script src="core/features.js"></script>
-    <script src="core/app.js"></script>
+    <script src="core/js/icons.js"></script>
+    <script src="core/js/storage.js"></script>
+    <script src="core/js/blocks.js"></script>
+    <script src="core/js/editor.js"></script>
+    <script src="core/js/history.js"></script>
+    <script src="core/js/features.js"></script>
+    <script src="core/js/app.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js');
